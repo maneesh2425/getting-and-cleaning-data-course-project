@@ -1,42 +1,79 @@
-Data Introduction
+#CODEBOOK
 
-This project will use six data, which are x_train.txt, x_test.txt, y_train.txt, y_test.txt, subject_train.txt and subject_test.txt, they can all be found inside the downloaded dataset, namely URI HAR Dataset.
+This codebook illustrates the variables in file "output". This file is the combination of seven original files, as discussed in the README file. It is produced by the R script available in this repository.
 
-The features.txt contains the correct variable name, which corresponds to each column of x_train.txt and x_test.txt. Further explanation of each feature is in the features_info.txt.
+Information on those original files can be found in the README of the authors of the dataset (http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones).
 
-The activity_labels.txt contains the desciptive names for each activity label, which corresponds to each number in the y_train.txt and y_test.txt.
+This file contains two types of variables: identifiers (factor variables that identify the subjectID\pair) and features (numerical variables measuring one aspect of the subject performance).
 
-The README.txt is the overall desciption about the overall process of how publishers of this dataset did the experiment and got the data result.
+The identifiers are the following:
+subjectID. This factor variable contains the number identifying each of the 30 volunteers who were part of the study. The variables goes from 1 to 30.
+activity. This factor variable contains the name of the activity. It takes six values: Walking, Walking Upstairs, Walking Downstairs, Sitting, Standing, Laying.
 
-Course Project Introduction
-
-The script run_analysis.R uses the data.table package for renaming column and reading in files. It performs 5 major steps including:
-
-Merges the training and the test sets to create one data set. (In the following the word data means both train and test). The x_data.txt, y_data.txt, subject_data.txt should be binded by row, and after that all three of them should binded by column.
-
-
-Extracts only the measurements on the mean and standard deviation for each measurement. For the column of x_data.txt, extract only the ones that have mean() or std() in their names, compare it with feature.txt.
-
-
-Uses descriptive activity names to name the activities in the data set. Match each number in the y_data column with activity_labels.txt.
-
-
-Appropriately labels the data set with descriptive variable names. Rename the column of y_data and subject_data, instead of using the default name given by R.
-
-From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
-
-Write out the tidy dataset to averagedata.txt.
-
-Final Tidy Data Description
-
-The final tidy data is produced inside the run_analysis.R, which I simply named it data3 and data4.
-
-data3 is the tidy data produced after going through the first 4 steps of the course project. It contains 10299 observations and 68 variables.
-
-The first column refers to each subject that did the experiment.
-
-Column 2~67 are the feature variables(mean and std of the whole feature variables).
-
-The last column is refers to the activity that the subjects were doing, including WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING.
-
-data4 is the tidy data produced after going through all 5 steps of the course project. It contains 180 observations and 68 variables. Where the first column is the subject id, second column is the activity and the rest are the average of each feature variables.
+The features are variables 3 to 68. Each of these 66 numerical variables measures the value of select measurements taken during the study. These variables are the following: 
+tBodyAcc-mean()-X
+tBodyAcc-mean()-Y	
+tBodyAcc-mean()-Z	
+tBodyAcc-std()-X	
+tBodyAcc-std()-Y	
+tBodyAcc-std()-Z	
+tGravityAcc-mean()-X	
+tGravityAcc-mean()-Y	
+tGravityAcc-mean()-Z	
+tGravityAcc-std()-X	
+tGravityAcc-std()-Y	
+tGravityAcc-std()-Z	
+tBodyAccJerk-mean()-X	
+tBodyAccJerk-mean()-Y	
+tBodyAccJerk-mean()-Z	
+tBodyAccJerk-std()-X	
+tBodyAccJerk-std()-Y	
+tBodyAccJerk-std()-Z	
+tBodyGyro-mean()-X	
+tBodyGyro-mean()-Y	
+tBodyGyro-mean()-Z	
+tBodyGyro-std()-X	
+tBodyGyro-std()-Y	
+tBodyGyro-std()-Z	
+tBodyGyroJerk-mean()-X	
+tBodyGyroJerk-mean()-Y	
+tBodyGyroJerk-mean()-Z	
+tBodyGyroJerk-std()-X	
+tBodyGyroJerk-std()-Y	
+tBodyGyroJerk-std()-Z	
+tBodyAccMag-mean()	
+tBodyAccMag-std()	
+tGravityAccMag-mean()	
+tGravityAccMag-std()	
+tBodyAccJerkMag-mean()	
+tBodyAccJerkMag-std()	
+tBodyGyroMag-mean()	
+tBodyGyroMag-std()	
+tBodyGyroJerkMag-mean()	
+tBodyGyroJerkMag-std()	
+fBodyAcc-mean()-X	
+fBodyAcc-mean()-Y	
+fBodyAcc-mean()-Z	
+fBodyAcc-std()-X	
+fBodyAcc-std()-Y	
+fBodyAcc-std()-Z	
+fBodyAccJerk-mean()-X	
+fBodyAccJerk-mean()-Y	
+fBodyAccJerk-mean()-Z	
+fBodyAccJerk-std()-X	
+fBodyAccJerk-std()-Y	
+fBodyAccJerk-std()-Z	
+fBodyGyro-mean()-X	
+fBodyGyro-mean()-Y	
+fBodyGyro-mean()-Z	
+fBodyGyro-std()-X	
+fBodyGyro-std()-Y	
+fBodyGyro-std()-Z	
+fBodyAccMag-mean()	
+fBodyAccMag-std()	
+fBodyBodyAccJerkMag-mean()	
+fBodyBodyAccJerkMag-std()	
+fBodyBodyGyroMag-mean()	
+fBodyBodyGyroMag-std()	
+fBodyBodyGyroJerkMag-mean()	
+fBodyBodyGyroJerkMag-std()
