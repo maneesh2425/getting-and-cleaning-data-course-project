@@ -1,73 +1,61 @@
-# Coursera Getting and Cleaning Data Course Project 
-library(data.table)
+library(dplyr)
+# Read all the Data
+dir <- "C:\\Users\\cools\\Desktop\\R\\Course3\\Week4\\Project\\UCI HAR Dataset\\"
+activity <- read.table(paste0(dir,"activity_labels.txt"),col.names = c("index","activity"))
+features   <- read.table(paste0(dir,"features.txt"),col.names = c("index","feature"))
 
-setwd("C:/Users/ASUS/Getting-Cleaning-Data-Course-Project")
+# Training Data
+train_sub <- read.table(paste0(dir,"train\\subject_train.txt"))
+train_X   <- read.table(paste0(dir,"train\\X_train.txt"))
+train_y   <- read.table(paste0(dir,"train\\y_train.txt"))
 
-url <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
-download.file( url, destfile = "data.zip" )
-unzip("data.zip")
+# Test Data
+test_sub <- read.table(paste0(dir,"test\\subject_test.txt"))
+test_X   <- read.table(paste0(dir,"test\\X_test.txt"))
+test_y   <- read.table(paste0(dir,"test\\y_test.txt"))
 
-# list.files(), reset the working directory
-setwd("C:/Users/ASUS/Getting-Cleaning-Data-Course-Project/UCI HAR Dataset")
+# Combine Training and Test Data
+sub <- rbind(train_sub,test_sub)
+X   <- rbind(train_X,test_X)
+y   <- rbind(train_y,test_y)
 
-# Files that will be used includes the following
-# test/subject_test.txt  , test/X_test.txt  , test/y_test.txt
-# train/subject_train.txt, train/X_train.txt, train/y_train.txt
-# exclude the file Inertial Signals
-trainfile <- list.files( "train", full.names = TRUE )[-1]
-testfile  <- list.files( "test" , full.names = TRUE )[-1]
+rm(train_sub,train_X,train_y)
+rm(test_sub,test_X,test_y)
 
-# Read in all six files
-file <- c( trainfile, testfile )
-data <- lapply( file, read.table, stringsAsFactors = FALSE, header = FALSE )
+# Combine into Dataframe by columns
+Data <- cbind(sub,y,X)
+names(Data) <-c("Subject","Activity",as.character(features$feature))
 
-
-# ---------------------------------------------------------------------
-# Step 1 : Merges the training and the test sets to create one data set
-# rbind the train and test data by each variable
-data1 <- mapply ( rbind, data[ c(1:3) ], data[ c(4:6) ] )
-
-# data2: the whole single dataset
-# column 1 = subject, column 2~562 = feature,  column 563 = activity
-data2 <- do.call( cbind, data1 )
-
-
-# ----------------------------------------------------------------------
-# Step 2 : For the feature column, extracts only the measurements on the 
-# mean and standard deviation for each measurement
-
-# match it using features.txt(second file in list.file() )
-# featurename is in the second column(V2)
-featurenames <- fread( list.files()[2], header = FALSE, stringsAsFactor = FALSE )
-
-# set the column names for data2, does the task required in 
-# Step 4 : Appropriately labels the data set with descriptive variable names.
-setnames( data2, c(1:563), c( "subject", featurenames$V2, "activity" ) )
-
-# Extract only the column that have mean() or std() in the end
-# Add 1 to it, cuz the first column in data2 is subject not feature
-# Don't just use mean when doing matching, this will include meanFreq()
-# Each backslash must be expressed as \\
-measurements <- grep( "std|mean\\(\\)", featurenames$V2 ) + 1
-
-# data3 : contains only the mean and standard deviation for feature column 
-data3 <- data2[, c( 1, measurements, 563 ) ]
+# rm(sub,X,y)
+# Only mean and std measurements extracted //remove others
+Data <- Data %>% select(Subject,Activity,contains("mean"),contains("std"))
 
 
-# ------------------------------------------------------------------------------
-# Step 3 : Use descriptive activity names to name the activities in the data set
+# Replace Activity ID with Activity Name
+Data$Activity <- activity$activity[Data$Activity]
 
-# match it using activity_labels.txt(first file in list.file() )
-activitynames <- fread( list.files()[1], header = FALSE, stringsAsFactor = FALSE )
+# Label Data Set with descriptive names
+names(Data) <- gsub("Body","Body",names(Data))
+names(Data) <- gsub("Gravity","Gravity",names(Data),ignore.case = T)
+names(Data) <- gsub("Acc","Accelerometer",names(Data))
+names(Data) <- gsub("Gyro","Gyroscope",names(Data))
+names(Data) <- gsub("Jerk","Jerk",names(Data))
+names(Data) <- gsub("Mag","Magnitude",names(Data))
 
-data3$activity <- activitynames$V2[ match( data3$activity, activitynames$V1 ) ]
+names(Data) <- gsub("mean","Mean",names(Data))
+names(Data) <- gsub("std","SD",names(Data))
+names(Data) <- gsub("Freq","Frequency",names(Data))
 
+names(Data) <- gsub("^t","Time",names(Data))
+names(Data) <- gsub("^f","Frequency",names(Data))
+names(Data) <- gsub("\\(t","\\(Time",names(Data))
 
-# ---------------------------------------------------------------------------------
-# Step 5 : From the data set in step 4, creates a second, independent tidy data set, 
-# with the average of each variable for each activity and each subject.
-data4 <- aggregate( . ~ subject + activity, data = data3, FUN = mean )
+names(Data) <- gsub("angle","Angle",names(Data))
+names(Data) <- gsub("-","",names(Data))
+names(Data) <- gsub("\\),",",",names(Data))
 
-# write out data4
-setwd("C:/Users/ASUS/Getting-Cleaning-Data-Course-Project")
-write.table( data4, "averagedata.txt", row.names = FALSE )
+# names(Data)
+
+# Create and Export New Data with averages for each activity and subject
+Data2 <- Data %>% group_by(Subject, Activity) %>% summarise_all(mean)
+write.table(Data2,"Data2.txt")
