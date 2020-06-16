@@ -1,144 +1,262 @@
-#CODEBOOK
 
-This codebook illustrates the variables in file "output". This file is the combination of seven original files, as discussed in the README file. It is produced by the R script available in this repository.
-
-Information on those original files can be found in the README of the authors of the dataset (http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones).
-
-This file contains two types of variables: identifiers (factor variables that identify the subjectID\pair) and features (numerical variables measuring one aspect of the subject performance).
-
-The identifiers are the following:
-subjectID. This factor variable contains the number identifying each of the 30 volunteers who were part of the study. The variables goes from 1 to 30.
-activity. This factor variable contains the name of the activity. It takes six values: Walking, Walking Upstairs, Walking Downstairs, Sitting, Standing, Laying.
-
-The features are variables 3 to 68. Each of these 66 numerical variables measures the value of select measurements taken during the study. These variables are the following: 
-tBodyAcc-mean()-X
-
-tBodyAcc-mean()-Y
-
-tBodyAcc-mean()-Z
-
-tBodyAcc-std()-X
-
-tBodyAcc-std()-Y
-
-tBodyAcc-std()-Z
-
-tGravityAcc-mean()-X
-
-tGravityAcc-mean()-Y
-
-tGravityAcc-mean()-Z
-
-tGravityAcc-std()-X
-
-tGravityAcc-std()-Y
-
-tGravityAcc-std()-Z
-
-tBodyAccJerk-mean()-X
-
-tBodyAccJerk-mean()-Y	
-
-tBodyAccJerk-mean()-Z
-
-tBodyAccJerk-std()-X	
-
-tBodyAccJerk-std()-Y
-
-tBodyAccJerk-std()-Z
-
-tBodyGyro-mean()-X
-
-tBodyGyro-mean()-Y	
-
-tBodyGyro-mean()-Z
-
-tBodyGyro-std()-X
-
-tBodyGyro-std()-Y
-
-tBodyGyro-std()-Z	
-
-tBodyGyroJerk-mean()-X
-
-tBodyGyroJerk-mean()-Y	
-
-tBodyGyroJerk-mean()-Z
-
-tBodyGyroJerk-std()-X	
-
-tBodyGyroJerk-std()-Y
-
-tBodyGyroJerk-std()-Z	
-
-tBodyAccMag-mean()
-
-tBodyAccMag-std()
-
-tGravityAccMag-mean()
-
-tGravityAccMag-std()	
-
-tBodyAccJerkMag-mean()
-
-tBodyAccJerkMag-std()
-
-tBodyGyroMag-mean()
-
-tBodyGyroMag-std()	
-
-tBodyGyroJerkMag-mean()	
-
-tBodyGyroJerkMag-std()	
-
-fBodyAcc-mean()-X	
-
-fBodyAcc-mean()-Y	
-
-fBodyAcc-mean()-Z	
-
-fBodyAcc-std()-X
-
-fBodyAcc-std()-Y
-
-fBodyAcc-std()-Z
-
-fBodyAccJerk-mean()-X	
-
-fBodyAccJerk-mean()-Y	
-
-fBodyAccJerk-mean()-Z
-
-fBodyAccJerk-std()-X
-
-fBodyAccJerk-std()-Y
-
-fBodyAccJerk-std()-Z
-
-fBodyGyro-mean()-X	
-
-fBodyGyro-mean()-Y
-
-fBodyGyro-mean()-Z	
-
-fBodyGyro-std()-X	
-
-fBodyGyro-std()-Y	
-
-fBodyGyro-std()-Z	
-
-fBodyAccMag-mean()	
-
-fBodyAccMag-std()	
-
-fBodyBodyAccJerkMag-mean()
-
-fBodyBodyAccJerkMag-std()	
-
-fBodyBodyGyroMag-mean()	
-
-fBodyBodyGyroMag-std()	
-
-fBodyBodyGyroJerkMag-mean()	
-
-fBodyBodyGyroJerkMag-std()
+# Code Book
+**Getting and Cleaning Data Project**
+
+By: Syed Abdullah Muzaffar
+
+Language: R
+
+Related Script: "data_analysis.R"
+
+**Dataset: UCI HAR Dataset**
+
+**Script Variables:**
+
+**Step 1:**
+ - **dir**
+	 - The directory that the dataset is stored in:
+ - **activity**
+	 - The list of activities with their numeric id and description
+ - **features**
+	 -  The list of features
+ - **train_sub**
+	 - Subject tests for the training dataset
+ - **train_X**
+	 - Feature values for the training dataset
+ - **train_y**
+	 - Activity ID's for the training dataset
+ - **test_sub**
+	 - Subject tests for the test dataset
+ - **test_X**
+	 - Feature values for the test dataset
+ - **test_y**
+	 - Activity ID's for the test dataset
+ 
+ - **sub**
+	 - Merges **train_sub** and **test_sub**
+ - **X**
+	 - Merges **train_X** and **test_X**
+ - **y**
+	 - Merges **train_y** and **test_y**
+
+The **train_*** and  **test_*** data frames are removed
+
+ - **Data** 
+	 - Merges **sub**, **y**, **X** by columns
+	 - The column names for Data columns **X** are replaced by Descriptive **features**
+
+**Step 2:**
+ - **Data**
+	 - Only the mean and standard deviation measurements are extracted.
+
+**Step 3:**
+ - **Data**
+	 - Replace Activity ID with Activity Name in the 2nd column
+
+**Step 4:**
+ - **Data**
+	 - Columns 2:END are labelled with descriptive names
+		 - Acc -> Accelerometer
+		 - Gyro -> Gyroscope
+		 - Mag -> Magnitude
+		 - mean -> Mean
+		 - std -> SD
+		 - Freq \f -> Frequency
+		 - t -> Time
+		 -  "-" (dashes) are removed
+		 - Some minor issues are fixed (extra brackets)
+
+**Step 5:**
+ - **Data2**
+	 - Contains the averages for each activity and group feature
+	 - exported to **"Data2.txt"**
+
+
+**Dataset Variables:**
+
+**Data2.txt**  
+
+Columns (Enclosed in Quotation Marks):
+
+ - **"Subject"** Column: 1 |Numeric(Counting) |The Test Subject ID
+ - **"Activity"** Column: 2 |String(Converted From Numeric ID to Descriptive String) | The Activity that the Subject is performing
+	-   WALKING : 1
+	-   WALKING_UPSTAIRS : 2
+	-   WALKING_DOWNSTAIRS : 3
+	-   SITTING : 4
+	-   STANDING :5
+	-   LAYING: 6
+
+ - **Features** Columns: 3-88 |Numeric |The means of each of the features in the UCI HAR Dataset by Subject and Activity
+ 
+ 	"TimeBodyAccelerometerMean()X"
+	
+	"TimeBodyAccelerometerMean()Y"
+	
+	"TimeBodyAccelerometerMean()Z"
+	
+	"TimeGravityAccelerometerMean()X"
+	
+	"TimeGravityAccelerometerMean()Y"
+	
+	"TimeGravityAccelerometerMean()Z"
+	
+	"TimeBodyAccelerometerJerkMean()X"
+	
+	"TimeBodyAccelerometerJerkMean()Y"
+	
+	"TimeBodyAccelerometerJerkMean()Z"
+	
+	"TimeBodyGyroscopeMean()X"
+	
+	"TimeBodyGyroscopeMean()Y"
+	
+	"TimeBodyGyroscopeMean()Z"
+	
+	"TimeBodyGyroscopeJerkMean()X"
+	
+	"TimeBodyGyroscopeJerkMean()Y"
+	
+	"TimeBodyGyroscopeJerkMean()Z"
+	
+	"TimeBodyAccelerometerMagnitudeMean()"
+	
+	"TimeGravityAccelerometerMagnitudeMean()"
+	
+	"TimeBodyAccelerometerJerkMagnitudeMean()"
+	
+	"TimeBodyGyroscopeMagnitudeMean()"
+	
+	"TimeBodyGyroscopeJerkMagnitudeMean()"
+	
+	"FrequencyBodyAccelerometerMean()X"
+	
+	"FrequencyBodyAccelerometerMean()Y"
+	
+	"FrequencyBodyAccelerometerMean()Z"
+	
+	"FrequencyBodyAccelerometerMeanFrequency()X"
+	
+	"FrequencyBodyAccelerometerMeanFrequency()Y"
+	
+	"FrequencyBodyAccelerometerMeanFrequency()Z"
+	
+	"FrequencyBodyAccelerometerJerkMean()X"
+	
+	"FrequencyBodyAccelerometerJerkMean()Y"
+	
+	"FrequencyBodyAccelerometerJerkMean()Z"
+	
+	"FrequencyBodyAccelerometerJerkMeanFrequency()X"
+	
+	"FrequencyBodyAccelerometerJerkMeanFrequency()Y"
+	
+	"FrequencyBodyAccelerometerJerkMeanFrequency()Z"
+	
+	"FrequencyBodyGyroscopeMean()X"
+	
+	"FrequencyBodyGyroscopeMean()Y"
+	
+	"FrequencyBodyGyroscopeMean()Z"
+	
+	"FrequencyBodyGyroscopeMeanFrequency()X"
+	
+	"FrequencyBodyGyroscopeMeanFrequency()Y"
+	
+	"FrequencyBodyGyroscopeMeanFrequency()Z"
+	
+	"FrequencyBodyAccelerometerMagnitudeMean()"
+	
+	"FrequencyBodyAccelerometerMagnitudeMeanFrequency()"
+	
+	"FrequencyBodyBodyAccelerometerJerkMagnitudeMean()"
+	
+	"FrequencyBodyBodyAccelerometerJerkMagnitudeMeanFrequency()"
+	
+	"FrequencyBodyBodyGyroscopeMagnitudeMean()"
+	
+	"FrequencyBodyBodyGyroscopeMagnitudeMeanFrequency()"
+	
+	"FrequencyBodyBodyGyroscopeJerkMagnitudeMean()"
+	
+	"FrequencyBodyBodyGyroscopeJerkMagnitudeMeanFrequency()"
+	
+	"Angle(TimeBodyAccelerometerMean,Gravity)"
+	
+	"Angle(TimeBodyAccelerometerJerkMean,GravityMean)"
+	
+	"Angle(TimeBodyGyroscopeMean,GravityMean)"
+	
+	"Angle(TimeBodyGyroscopeJerkMean,GravityMean)"
+	
+	"Angle(X,GravityMean)"
+	
+	"Angle(Y,GravityMean)"
+	
+	"Angle(Z,GravityMean)"
+	
+	"TimeBodyAccelerometerSD()X"
+	
+	"TimeBodyAccelerometerSD()Y"
+	
+	"TimeBodyAccelerometerSD()Z"
+	
+	"TimeGravityAccelerometerSD()X"
+	
+	"TimeGravityAccelerometerSD()Y"
+	
+	"TimeGravityAccelerometerSD()Z"
+	
+	"TimeBodyAccelerometerJerkSD()X"
+	
+	"TimeBodyAccelerometerJerkSD()Y"
+	
+	"TimeBodyAccelerometerJerkSD()Z"
+	
+	"TimeBodyGyroscopeSD()X"
+	
+	"TimeBodyGyroscopeSD()Y"
+	
+	"TimeBodyGyroscopeSD()Z"
+	
+	"TimeBodyGyroscopeJerkSD()X"
+	
+	"TimeBodyGyroscopeJerkSD()Y"
+	
+	"TimeBodyGyroscopeJerkSD()Z"
+	
+	"TimeBodyAccelerometerMagnitudeSD()"
+	
+	"TimeGravityAccelerometerMagnitudeSD()"
+	
+	"TimeBodyAccelerometerJerkMagnitudeSD()"
+	
+	"TimeBodyGyroscopeMagnitudeSD()"
+	
+	"TimeBodyGyroscopeJerkMagnitudeSD()"
+	
+	"FrequencyBodyAccelerometerSD()X"
+	
+	"FrequencyBodyAccelerometerSD()Y"
+	
+	"FrequencyBodyAccelerometerSD()Z"
+	
+	"FrequencyBodyAccelerometerJerkSD()X"
+	
+	"FrequencyBodyAccelerometerJerkSD()Y"
+	
+	"FrequencyBodyAccelerometerJerkSD()Z"
+	
+	"FrequencyBodyGyroscopeSD()X"
+	
+	"FrequencyBodyGyroscopeSD()Y"
+	
+	"FrequencyBodyGyroscopeSD()Z"
+	
+	"FrequencyBodyAccelerometerMagnitudeSD()"
+	
+	"FrequencyBodyBodyAccelerometerJerkMagnitudeSD()"
+	
+	"FrequencyBodyBodyGyroscopeMagnitudeSD()"
+	
+	"FrequencyBodyBodyGyroscopeJerkMagnitudeSD()"
